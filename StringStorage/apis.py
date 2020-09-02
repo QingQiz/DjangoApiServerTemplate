@@ -91,19 +91,16 @@ def getInfo(request):
         HTTP/1.1 200 OK
         {
             "error": 0,
-            "result": {
-                "update": 0,
-                "create": 1
+            "reason": {
+                "name": "string name",
+                "value": "string value"
             }
         }
     @apiErrorExample {json} Error-Response:
         HTTP/1.1 200 OK
         {
             "error": 1,
-            "reason": {
-                "name": "string name",
-                "value": "string value"
-            }
+            "reason": "error reason here"
         }
     """
     name = request.POST.get('name')
