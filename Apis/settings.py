@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +21,18 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%lp#x3kmb1%q(@^at-z2(g3$j%e1r@m5fiu+_#dy$q+$08%m$-'
+secKeyPath = os.path.join(BASE_DIR, 'SECRET_KEY')
+
+if os.path.exists(secKeyPath):
+    SECRET_KEY = open(secKeyPath).read().strip()
+else:
+    import random, string
+
+    generator = string.ascii_letters + string.digits + string.punctuation
+    SECRET_KEY = ''.join(random.choices(generator, k=256))
+
+    with open(secKeyPath, 'w') as f:
+        f.write(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -118,8 +130,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-import os
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
